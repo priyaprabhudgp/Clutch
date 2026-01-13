@@ -1,4 +1,4 @@
-terminal, navigate to student-game-app 
+Dear the rest of our group, 
 1. Go to vs code terminal
 2. run 'cd student-game-app'
 3. then run 'npm install'
