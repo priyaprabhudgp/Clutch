@@ -1,7 +1,7 @@
 /*import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './styles/App.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -33,8 +33,27 @@ function App() {
 }
 
 export default App*/
+/*import { useState } from "react";
+import AssignmentForm from "./components/AssignmentForm"; 
+import AssignmentList from "./components/AssignmentList";
+
 function App() {
-  return <h1>Student Quest</h1>;
+  const [assignments, setAssignments] = useState([]);
+  const [coins, setCoins] = useState(0);
+
+  return (
+    <div>
+      <h1>Student Quest</h1>
+      <p>Coins: {coins}</p>
+      <AssignmentList assignments={assignments} />
+    </div>
+  );
+}
+
+export default App;
+*/
+function App() {
+  return <h1>Intial Set-up</h1>;
 }
 
 export default App;
