@@ -52,8 +52,25 @@ function App() {
 
 export default App;
 */
+import React from "react";
+
 function App() {
-  return <h1>Intial Set-up</h1>;
+
+  CurrentTime();
+  return <h1>Intial</h1>;
+}
+function CurrentTime() {
+  const [time, setTime] = React.useState(new Date());
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return <div>{time.toLocaleString()}</div>;
 }
 
 export default App;
