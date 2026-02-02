@@ -1,76 +1,128 @@
-/*import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './styles/App.css'
+import { useState, useEffect } from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import { auth } from "./firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App*/
-/*import { useState } from "react";
-import AssignmentForm from "./components/AssignmentForm"; 
+import AuthForm from "./components/Authform";
+import AssignmentForm from "./components/AssignmentForm";
 import AssignmentList from "./components/AssignmentList";
+import { calculateSubmissionCoins } from "./logic/coinRules";
+import { db } from "./firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 function App() {
+  const [user, setUser] = useState(null);
   const [assignments, setAssignments] = useState([]);
   const [coins, setCoins] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  // Listen to auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Load user data when login
+  useEffect(() => {
+  if (!user) return;
+
+  const loadData = async () => {
+    const docRef = doc(db, "users", user.uid);
+    const snapshot = await getDoc(docRef);
+
+    if (snapshot.exists()) {
+      const data = snapshot.data();
+      setAssignments(data.assignments || []);
+      setCoins(data.coins || 0);
+    } else {
+      await setDoc(docRef, { assignments: [], coins: 0 });
+      setAssignments([]);
+      setCoins(0);
+    }
+
+    setLoading(false); // ✅ IMPORTANT
+  };
+
+  loadData();
+}, [user]);
+
+  // Save user data on change
+  useEffect(() => {
+  if (!user || loading) return; // 🚨 GUARD
+
+  const saveData = async () => {
+    const docRef = doc(db, "users", user.uid);
+    await setDoc(docRef, { assignments, coins });
+  };
+
+  saveData();
+}, [assignments, coins, user, loading]);
+
+
+  const handleAddAssignment = (assignment) => {
+    setAssignments((prev) => [...prev, assignment]);
+  };
+
+  const handleSubmitAssignment = (id) => {
+    setAssignments((prev) =>
+      prev.map((assignment) => {
+        if (assignment.id !== id || assignment.submitted) return assignment;
+
+        const submittedAt = Date.now();
+        const coinsEarned = calculateSubmissionCoins({
+          dueDate: assignment.dueDate,
+          submittedAt,
+        });
+
+        setCoins((prevCoins) => prevCoins + coinsEarned);
+
+        return {
+          ...assignment,
+          submitted: true,
+          submittedAt,
+          coinsAwarded: coinsEarned,
+        };
+      })
+    );
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
+  if (!user) {
+    return <AuthForm onLogin={setUser} />;
+  }
 
   return (
     <div>
-      <h1>Student Quest</h1>
-      <p>Coins: {coins}</p>
-      <AssignmentList assignments={assignments} />
+      <p>Logged in as: {user.email}</p>
+      <button onClick={handleLogout}>Logout</button>
+      <p>🪙 Coins: {coins}</p>
+
+      <nav>
+        <Link to="/">Dashboard</Link>
+      </nav>
+
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <AssignmentForm onAddAssignment={handleAddAssignment} />
+              <AssignmentList
+                assignments={assignments}
+                onSubmitAssignment={handleSubmitAssignment}
+              />
+            </>
+          }
+        />
+      </Routes>
     </div>
   );
-}
-
-export default App;
-*/
-import React from "react";
-
-function App() {
-
-  CurrentTime();
-  return <h1>Intial</h1>;
-}
-function CurrentTime() {
-  const [time, setTime] = React.useState(new Date());
-
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return <div>{time.toLocaleString()}</div>;
 }
 
 export default App;
