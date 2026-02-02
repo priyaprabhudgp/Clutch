@@ -1,64 +1,13 @@
-/*import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './styles/App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App*/
-/*import { useState } from "react";
-import AssignmentForm from "./components/AssignmentForm"; 
-import AssignmentList from "./components/AssignmentList";
-
-function App() {
-  const [assignments, setAssignments] = useState([]);
-  const [coins, setCoins] = useState(0);
-
-  return (
-    <div>
-      <h1>Student Quest</h1>
-      <p>Coins: {coins}</p>
-      <AssignmentList assignments={assignments} />
-    </div>
-  );
-}
-
-export default App;
-*/
 import { Routes, Route, Link } from "react-router-dom";
 import { useState } from "react";
 import AssignmentForm from "./components/AssignmentForm";
 import AssignmentList from "./components/AssignmentList";
+import About from "./pages/About";
+import Store from "./pages/Store";
 
 function App() {
   const [assignments, setAssignments] = useState([]);
+  const [coins, setCoins] = useState(3000000);
 
   function handleAddAssignment(assignment) {
     setAssignments((prev) => [...prev, assignment]);
@@ -68,7 +17,9 @@ function App() {
     <div>
       <nav>
         <Link to="/">Dashboard</Link> |{" "}
-        <Link to="/character">Character</Link>
+        <Link to="/character">Character</Link> |{" "}
+        <Link to="/about">About</Link> |{" "}
+        <Link to="/store">Store</Link>
       </nav>
 
       <Routes>
@@ -86,6 +37,10 @@ function App() {
           path="/character"
           element={<h2>Character Page (Coming Soon)</h2>}
         />
+
+        <Route path="/about" element={<About />} />
+
+        <Route path="/store" element={<Store coins={coins} setCoins={setCoins} />} />
       </Routes>
     </div>
   );
