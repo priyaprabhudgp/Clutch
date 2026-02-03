@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import { auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
+import { isSameDay } from "./logic/timeUtils";
 
 import AuthForm from "./components/Authform";
 import AssignmentForm from "./components/AssignmentForm";
@@ -15,6 +16,7 @@ function App() {
   const [assignments, setAssignments] = useState([]);
   const [coins, setCoins] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [lastDecayCheck, setLastDecayCheck] = useState(null);
 
   // Listen to auth state
   useEffect(() => {
@@ -55,11 +57,34 @@ function App() {
 
   const saveData = async () => {
     const docRef = doc(db, "users", user.uid);
-    await setDoc(docRef, { assignments, coins });
+    await setDoc(docRef, { assignments, coins, lastDecayCheck });
   };
 
   saveData();
 }, [assignments, coins, user, loading]);
+
+useEffect(() => {
+  if (!user || loading) return;
+
+  const now = new Date();
+  if (lastDecayCheck && isSameDay(lastDecayCheck, now)) {
+    return;
+  }
+
+  let totalPenalty = 0;
+  // Calculate total overdue penalty
+  assignments.forEach((a) => {
+    if(!a.submitted && now > a.dueDate) {
+      totalPenalty += Math.floor((now - new Date(a.dueDate)) / 86400000) * 5;
+    }  });
+
+  if (totalPenalty > 0) {
+    setCoins((prevCoins) => Math.max(prevCoins - totalPenalty, 0));
+  }
+
+  setLastDecayCheck(now);
+}, [user, loading, assignments, lastDecayCheck]);
+
 
 
   const handleAddAssignment = (assignment) => {
