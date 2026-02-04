@@ -34,7 +34,7 @@ function AuthForm({ onLogin }) {
   return (
     <div className="AuthFormContainer">
       <div className="AuthCard">
-        <h2>{isLogin ? "Login" : "Sign Up"}</h2>
+        <h2>{isLogin ? "Login in on Toassst 🍞" : "Sign Up on Toassst 🍞"}</h2>
         <form onSubmit={handleSubmit}>
           <TextInputField
             type="email"
@@ -53,10 +53,11 @@ function AuthForm({ onLogin }) {
             name="password"
           />
 
-          <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
+          <button className= "button" type="submit">{isLogin ? "Login" : "Sign Up"}</button>
         </form>
 
         {error && <p className="error">{error}</p>}
+  
 
         <button className="toggleButton" onClick={() => setIsLogin(!isLogin)}>
           {isLogin ? "Create Account" : "Back to Login"}

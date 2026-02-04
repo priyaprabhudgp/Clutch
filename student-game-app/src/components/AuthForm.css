@@ -38,15 +38,25 @@
 .AuthCard .toggleButton {
   margin-top: 20px;
   display: inline-block;
+  background: none;
+  border: none;
+  text-decoration: bold;
+  
+}
+
+.AuthCard .toggleButton:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  text-decoration: underline
 }
 
 /* Keep button styles scoped to this card */
-.AuthCard button {
+.AuthCard .button {
   all: unset;
   box-sizing: border-box;
   border-radius: 12px;
-  background-color: #f7ead8;
-  border: 2px solid #edcc9e;
+  background-color:  #edcc9e;
+  border: 2px solid #f7ead8;
   padding: 12px 24px;
   height: 48px;
   font-size: 16px;
@@ -60,7 +70,7 @@
   margin-bottom: 12px;
 }
 
-.AuthCard button:hover {
+.AuthCard .button:hover {
   background-color: #f4dab6;
   border-color: #e4c08d;
   transform: translateY(-2px);
@@ -70,3 +80,4 @@
 .AuthCard button:active {
   transform: translateY(0);
 }
+
