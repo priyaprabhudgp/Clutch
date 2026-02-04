@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 import "./Store.css";
 
 import toastLogo from "../assets/toast_tm.png";
@@ -19,6 +21,14 @@ function Store({ coins, setCoins }) {
   const [owned, setOwned] = useState(() => new Set());
 
   const items = useMemo(() => STORE_ITEMS, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
+  };
 
   function handleBuy(item) {
     // already owned
@@ -66,9 +76,10 @@ function Store({ coins, setCoins }) {
           <div className="hearts">♡ ♡</div>
         </div>
 
-        <button className="logoutBtn" type="button">
+        <button className="logoutBtn" type="button" onClick={handleLogout}>
           <img className="sideImgIcon" src={logoutIcon} alt="Logout icon" />
           <span>Logout</span>
+          
         </button>
       </aside>
 

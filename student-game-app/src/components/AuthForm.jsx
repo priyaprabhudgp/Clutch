@@ -32,30 +32,36 @@ function AuthForm({ onLogin }) {
   };
 
   return (
-    <div>
-      <h2>{isLogin ? "Login" : "Sign Up"}</h2>
-      <form onSubmit={handleSubmit}>
-        <TextInputField
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-          name="email"
-        />
-        <PasswordToggleFieldDemo
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-          name="password"
-        />
-        <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button onClick={() => setIsLogin(!isLogin)}>
-        {isLogin ? "Create Account" : "Back to Login"}
-      </button>
+    <div className="AuthFormContainer">
+      <div className="AuthCard">
+        <h2>{isLogin ? "Login" : "Sign Up"}</h2>
+        <form onSubmit={handleSubmit}>
+          <TextInputField
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            name="email"
+          />
+
+          <PasswordToggleFieldDemo
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            required
+            name="password"
+          />
+
+          <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
+        </form>
+
+        {error && <p className="error">{error}</p>}
+
+        <button className="toggleButton" onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? "Create Account" : "Back to Login"}
+        </button>
+      </div>
     </div>
   );
 }
