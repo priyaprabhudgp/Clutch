@@ -1,0 +1,72 @@
+.AuthFormContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #f7ead8 0%, #f4dab6 100%);
+}
+
+.AuthCard {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  max-width: 420px;
+  width: 100%;
+}
+
+.AuthCard h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 28px;
+  font-size: 28px;
+}
+
+.AuthCard form {
+  display: flex;
+  flex-direction: column;
+}
+
+.AuthCard .error {
+  color: #d32f2f;
+  text-align: center;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.AuthCard .toggleButton {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+/* Keep button styles scoped to this card */
+.AuthCard button {
+  all: unset;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background-color: #f7ead8;
+  border: 2px solid #edcc9e;
+  padding: 12px 24px;
+  height: 48px;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s ease;
+  margin-bottom: 12px;
+}
+
+.AuthCard button:hover {
+  background-color: #f4dab6;
+  border-color: #e4c08d;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(228, 192, 141, 0.16);
+}
+
+.AuthCard button:active {
+  transform: translateY(0);
+}

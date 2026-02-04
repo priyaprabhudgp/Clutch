@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { auth } from "../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import TextInputField from "./TextInputField";
+import PasswordToggleFieldDemo from "./PasswordToggleFieldDemo";
+import "./TextInputField.css";
+import "./PasswordToggleFieldDemo.css";
+import "./AuthForm.css";
 
 function AuthForm({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -30,8 +35,21 @@ function AuthForm({ onLogin }) {
     <div>
       <h2>{isLogin ? "Login" : "Sign Up"}</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+        <TextInputField
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          required
+          name="email"
+        />
+        <PasswordToggleFieldDemo
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+          name="password"
+        />
         <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
       </form>
       {error && <p style={{ color: "red" }}>{error}</p>}
