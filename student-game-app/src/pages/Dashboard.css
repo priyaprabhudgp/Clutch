@@ -1,0 +1,214 @@
+/* Main wrapper */
+.dashboardContentOnly {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.dashboardTitle {
+  font-size: 60px;
+  margin: 0;
+  color: #111;
+  letter-spacing: 1px;
+}
+
+.coinBox {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 16px;
+}
+
+.coinIcon {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.coinText {
+  font-size: 52px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: -2px 0 #7a4a2a, 0 2px #7a4a2a, 2px 0 #7a4a2a,
+    0 -2px #7a4a2a;
+  letter-spacing: 2px;
+}
+
+/* Main panel */
+.dashboardPanel {
+  flex: 1;
+  background: #f8efe6;
+  border-radius: 26px;
+  padding: 22px;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Scroll area */
+.panelScroll {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Section Styles */
+.formSection {
+  background: #fff;
+  padding: 18px;
+  border-radius: 18px;
+  border: 2px solid #e8d7c3;
+}
+
+.formSection h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.formSection form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formSection input,
+.formSection select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.formSection button {
+  padding: 10px 18px;
+  background: #b8956a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.formSection button:hover {
+  background: #9a7c52;
+}
+
+/* List Section */
+.listSection {
+  background: #fff;
+  padding: 18px;
+  border-radius: 18px;
+  border: 2px solid #e8d7c3;
+}
+
+.listSection h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+/* Assignment Cards in List */
+.assignmentCard {
+  background: #faf7f2;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border-left: 4px solid #b8956a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assignmentCard input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  accent-color: #b8956a;
+}
+
+.assignmentCardContent {
+  flex: 1;
+}
+
+.assignmentCardContent strong {
+  display: block;
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.assignmentCardContent div {
+  font-size: 13px;
+  color: #666;
+}
+
+.assignmentCardStatus {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: #fff3cd;
+  color: #856404;
+}
+
+.assignmentCardStatus.submitted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.assignmentCardStatus.overdue {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Submitted Section */
+.submittedSection {
+  background: #fff;
+  padding: 18px;
+  border-radius: 18px;
+  border: 2px solid #e8d7c3;
+}
+
+.submittedSection h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+}
+
+.submittedList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submittedCard {
+  background: #e8f5e9;
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 4px solid #4caf50;
+}
+
+.submittedCard strong {
+  display: block;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.submittedCard div {
+  font-size: 13px;
+  color: #558b2f;
+}

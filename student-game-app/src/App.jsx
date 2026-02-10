@@ -4,6 +4,7 @@ import { auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { isSameDay } from "./logic/timeUtils";
 
+import Dashboard from "./pages/Dashboard";
 import AuthForm from "./components/AuthForm";
 import AssignmentForm from "./components/AssignmentForm";
 import AssignmentList from "./components/AssignmentList";
@@ -32,6 +33,19 @@ function App() {
   }, []);
 
   // Load user data when login
+
+  const [character, setCharacter] = useState({
+  base: "bread",        // future-proof
+  spread: null,         // butter, jam, peanut_butter
+  topping: null,        // sprinkles, berries
+  accessory: null,      // hat, plate
+});
+
+const [inventory, setInventory] = useState({
+  spreads: ["butter"],
+  toppings: [],
+  accessories: [],
+});
   useEffect(() => {
     if (!user) return;
 
@@ -141,17 +155,13 @@ function App() {
         <Route
           path="/"
           element={
-            <>
-              <p>Logged in as: {user.email}</p>
-              <p>🪙 Coins: {coins}</p>
-
-              <AssignmentForm onAddAssignment={handleAddAssignment} />
-              <AssignmentList
-                assignments={assignments}
-                onSubmitAssignment={handleSubmitAssignment}
-              />
-            </>
-          }
+          <Dashboard
+          coins={coins}
+          assignments={assignments}
+          onAddAssignment={handleAddAssignment}
+          onSubmitAssignment={handleSubmitAssignment}
+          />
+  }
         />
 
         <Route
