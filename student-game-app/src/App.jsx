@@ -27,6 +27,14 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      
+      // Clear state when user changes (logout or login switch)
+      if (!currentUser) {
+        setAssignments([]);
+        setCoins(3000000);
+        setLastDecayCheck(null);
+        setLoading(true);
+      }
     });
 
     return () => unsubscribe();
@@ -59,13 +67,14 @@ const [inventory, setInventory] = useState({
         setCoins(data.coins || 0);
         setLastDecayCheck(data.lastDecayCheck || null);
       } else {
+        
         await setDoc(docRef, {
           assignments: [],
           coins: 0,
           lastDecayCheck: null,
         });
         setAssignments([]);
-        setCoins(0);
+        setCoins(3000000);
         setLastDecayCheck(null);
       }
 
@@ -140,6 +149,10 @@ const [inventory, setInventory] = useState({
   };
 
   const handleLogout = async () => {
+    setAssignments([]);
+    setCoins(3000000);
+    setLastDecayCheck(null);
+    setLoading(true);
     await signOut(auth);
   };
 

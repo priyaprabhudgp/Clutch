@@ -5,55 +5,52 @@ import {
 } from "../logic/timeUtils";
 
 function AssignmentList({ assignments, onSubmitAssignment }) {
-  if (assignments.length === 0) {
-    return <p>No assignments yet.</p>;
+  const pendingAssignments = assignments.filter((a) => !a.submitted);
+
+  if (pendingAssignments.length === 0) {
+    return <p>No pending assignments.</p>;
   }
 
   return (
     <div>
       <h2>Your Assignments</h2>
 
-      <ul>
-        {assignments.map((assignment) => {
-          const overdue = isOverdue(
-            assignment.dueDate,
-            assignment.submitted
-          );
+      {pendingAssignments.map((assignment) => {
+        const overdue = isOverdue(assignment.dueDate, assignment.submitted);
+        const daysLate = getDaysOverdue(
+          assignment.dueDate,
+          assignment.submitted
+        );
+        const status = getAssignmentStatus(
+          assignment.dueDate,
+          assignment.submitted
+        );
 
-          const daysLate = getDaysOverdue(
-            assignment.dueDate,
-            assignment.submitted
-          );
-
-          const status = getAssignmentStatus(
-            assignment.dueDate,
-            assignment.submitted
-          );
-
-          return (
-            <li key={assignment.id}>
+        return (
+          <div key={assignment.id} className="assignmentCard">
+            <input
+              type="checkbox"
+              onChange={() => onSubmitAssignment(assignment.id)}
+              checked={assignment.submitted}
+              title="Mark as submitted"
+            />
+            <div className="assignmentCardContent">
               <strong>{assignment.title}</strong>
               <div>Course: {assignment.course}</div>
               <div>Due: {assignment.dueDate}</div>
-              <div>Status: {status}</div>
-
-              {overdue && (
-                <div style={{ color: "red" }}>
-                  {daysLate} day{daysLate !== 1 ? "s" : ""} overdue
-                </div>
-              )}
-
-              {!assignment.submitted && (
-                <button
-                  onClick={() => onSubmitAssignment(assignment.id)}
-                >
-                  Mark as Submitted
-                </button>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+              <div
+                className={`assignmentCardStatus ${
+                  overdue ? "overdue" : ""
+                }`}
+              >
+                {status}
+                {overdue &&
+                  ` (${daysLate} day${daysLate !== 1 ? "s" : ""} overdue)`}
+              </div>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -85,12 +85,25 @@
   gap: 12px;
 }
 
+.formSection div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formSection label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
 .formSection input,
 .formSection select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 14px;
+  font-family: inherit;
 }
 
 .formSection button {
@@ -102,6 +115,7 @@
   cursor: pointer;
   font-weight: 600;
   transition: background 0.2s;
+  align-self: flex-start;
 }
 
 .formSection button:hover {
@@ -129,8 +143,7 @@
   margin-bottom: 12px;
   border-radius: 12px;
   border-left: 4px solid #b8956a;
-  display: flex;
-  align-items: center;
+  display: flexflex-start;
   gap: 12px;
 }
 
@@ -139,6 +152,8 @@
   height: 24px;
   cursor: pointer;
   accent-color: #b8956a;
+  margin-top: 2px;
+  flex-shrink: 0;
 }
 
 .assignmentCardContent {
@@ -155,13 +170,17 @@
 .assignmentCardContent div {
   font-size: 13px;
   color: #666;
+  margin-bottom: 2px;
 }
 
 .assignmentCardStatus {
+  display: inline-block;
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 6px;
   background: #fff3cd;
+  color: #856404;
+  margin-top: 4pxff3cd;
   color: #856404;
 }
 
@@ -193,6 +212,25 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.submittedCard {
+  background: #e8f5e9;
+  padding: 12px;
+  border-radius: 10px;
+  border-left: 4px solid #4caf50;
+}
+
+.submittedCard strong {
+  display: block;
+  color: #2e7d32;
+  margin-bottom: 4px;
+}
+
+.submittedCard div {
+  font-size: 13px;
+  color: #558b2f;
+  margin-bottom: 2px;
 }
 
 .submittedCard {
