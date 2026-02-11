@@ -1,15 +1,19 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import "./Store.css";
 
 import coinIcon from "../assets/coin.png";
-import { PACKS } from "../data/packs";
+import { PACKS, ITEM_IMAGES } from "../data/packs";
+import PackResultDialog from "../components/AlertDialog";
 
 function formatNumber(n) {
   return n.toLocaleString("en-US");
 }
 
-function Store({ coins, setCoins, packsOwned, onBuyPack }) {
+function Store({ coins, setCoins, packsOwned, onBuyPack, inventory }) {
   const items = useMemo(() => PACKS, []);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [pulledItem, setPulledItem] = useState(null);
+  const [isDupe, setIsDupe] = useState(false);
 
   function getRandomItems(packItems, dropCount) {
     const result = [];
@@ -25,11 +29,40 @@ function Store({ coins, setCoins, packsOwned, onBuyPack }) {
 
     setCoins((c) => c - pack.price);
     const randomItems = getRandomItems(pack.items, pack.dropCount || 1);
+    
+    // pulled item details
+    const pulledItemId = randomItems[0];
+    const itemData = ITEM_IMAGES[pulledItemId];
+    
+    // pack categories to check inventory
+    const packCategoryMap = {
+      jamPack: "jam",
+      meatPack: "meat",
+      moldPack: "mold",
+      mysteryPack: "mystery",
+      spreadPack: "spreads",
+      veggiesPack: "veggies",
+    };
+    const category = packCategoryMap[pack.id];
+    const wasAlreadyOwned = inventory[category]?.includes(pulledItemId) || false;
+    
+    setPulledItem(itemData);
+    setIsDupe(wasAlreadyOwned);
+    setDialogOpen(true);
+    
     onBuyPack(pack.id, randomItems);
   }
 
   return (
     <div className="storeContentOnly">
+      <PackResultDialog
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        itemName={pulledItem?.name}
+        itemImage={pulledItem?.img}
+        isDupe={isDupe}
+      />
+      
       <div className="storeHeader">
         <h1 className="storeTitle">Store</h1>
 

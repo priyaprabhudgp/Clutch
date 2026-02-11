@@ -279,6 +279,7 @@ function App() {
               setCoins={setCoins}
               packsOwned={packsOwned}
               onBuyPack={handleBuyPack}
+              inventory={inventory}
             />
           }
         />
