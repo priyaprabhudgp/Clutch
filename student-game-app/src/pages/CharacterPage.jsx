@@ -22,9 +22,6 @@ function CharacterPage({ character, inventory, coins, onUpdateCharacter }) {
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const handleReset = () => {
-    setTempCharacter(character);
-  };
 
   return (
     <div className="characterPageContentOnly">
@@ -46,9 +43,6 @@ function CharacterPage({ character, inventory, coins, onUpdateCharacter }) {
           <div className="previewControls">
             <button className="saveButton" onClick={handleSave}>
               {saved ? "✓ Saved!" : "Save Customization"}
-            </button>
-            <button className="resetButton" onClick={handleReset}>
-              Reset
             </button>
           </div>
         </div>
