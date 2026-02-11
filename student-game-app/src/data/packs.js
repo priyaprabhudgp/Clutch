@@ -26,6 +26,7 @@ export const ITEM_IMAGES = {
   penguin: { name: "Penguin", img: "/gacha-bank/MeatPack/pairPenguin.png" },
   shrimp: { name: "Shrimp", img: "/gacha-bank/MeatPack/shrimp.png" },
   tunaCan: { name: "Tuna Can", img: "/gacha-bank/MeatPack/tunaCan.png" },
+  lotsFish: { name: "Lots of Fish", img: "/gacha-bank/MeatPack/lotsFish.png" },
 
   // Mold items
   moldGreen: { name: "Green Mold", img: "/gacha-bank/MoldPack/green.png" },
@@ -84,6 +85,7 @@ export const PACKS = [
     price: 4000,
     img: jamPackImg,
     items: ["banana", "blueberry", "cherry", "grape", "raspberry", "strawberry"],
+    dropCount: 1,
   },
   {
     id: "meatPack",
@@ -91,6 +93,7 @@ export const PACKS = [
     price: 3000,
     img: meatPackImg,
     items: ["bigMeat", "blueFish", "brownFish", "crab", "deadFish", "longFish", "lotsFish", "penguin", "shrimp", "tunaCan"],
+    dropCount: 1,
   },
   {
     id: "moldPack",
@@ -98,6 +101,7 @@ export const PACKS = [
     price: 30000,
     img: moldPackImg,
     items: ["moldGreen", "moldBlue", "moldPurple", "moldRed", "moldYellow", "moldOrange", "moldBrown"],
+    dropCount: 1,
   },
   {
     id: "mysteryPack",
@@ -105,6 +109,7 @@ export const PACKS = [
     price: 10000,
     img: mysteryPackImg,
     items: ["mystery1", "mystery2", "mystery3", "mystery4", "mystery5", "mystery6", "mystery7", "mystery8", "mystery9", "mystery10", "mystery11"],
+    dropCount: 1,
   },
   {
     id: "spreadPack",
@@ -112,6 +117,7 @@ export const PACKS = [
     price: 5000,
     img: spreadPackImg,
     items: ["butter", "cream", "honey", "margarine", "peanutButter", "tahini", "cake", "cheese", "ice", "rice"],
+    dropCount: 1,
   },
   {
     id: "veggiesPack",
@@ -119,5 +125,6 @@ export const PACKS = [
     price: 5000,
     img: veggiesPackImg,
     items: ["carrot", "cucumber", "lettuce", "onion", "tomato", "zucchini", "chili", "ginger", "eggplant", "bigSprout"],
+    dropCount: 1,
   },
 ];

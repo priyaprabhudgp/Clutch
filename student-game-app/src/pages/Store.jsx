@@ -11,12 +11,21 @@ function formatNumber(n) {
 function Store({ coins, setCoins, packsOwned, onBuyPack }) {
   const items = useMemo(() => PACKS, []);
 
+  function getRandomItems(packItems, dropCount) {
+    const result = [];
+    for (let i = 0; i < dropCount; i++) {
+      const randomIndex = Math.floor(Math.random() * packItems.length);
+      result.push(packItems[randomIndex]);
+    }
+    return result;
+  }
+
   function handleBuy(pack) {
-    if (packsOwned.includes(pack.id)) return;
     if (coins < pack.price) return;
 
     setCoins((c) => c - pack.price);
-    onBuyPack(pack.id, pack.items);
+    const randomItems = getRandomItems(pack.items, pack.dropCount || 1);
+    onBuyPack(pack.id, randomItems);
   }
 
   return (
@@ -34,7 +43,6 @@ function Store({ coins, setCoins, packsOwned, onBuyPack }) {
         <div className="itemsScroll">
           <div className="itemsGrid">
             {items.map((pack) => {
-              const isOwned = packsOwned.includes(pack.id);
               const canAfford = coins >= pack.price;
 
               return (
@@ -43,14 +51,11 @@ function Store({ coins, setCoins, packsOwned, onBuyPack }) {
                   type="button"
                   className={[
                     "itemCard",
-                    isOwned ? "owned" : "",
-                    !isOwned && !canAfford ? "locked" : "",
+                    !canAfford ? "locked" : "",
                   ].join(" ")}
                   onClick={() => handleBuy(pack)}
                   title={
-                    isOwned
-                      ? "Owned"
-                      : canAfford
+                    canAfford
                       ? `Buy for ${pack.price}`
                       : "Not enough coins"
                   }
@@ -64,8 +69,7 @@ function Store({ coins, setCoins, packsOwned, onBuyPack }) {
                     <span className="priceText">{formatNumber(pack.price)}</span>
                   </div>
 
-                  {isOwned && <div className="badge">Owned</div>}
-                  {!isOwned && !canAfford && (
+                  {!canAfford && (
                     <div className="badge danger">Too Expensive</div>
                   )}
                 </button>
