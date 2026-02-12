@@ -22,8 +22,8 @@ function InventoryItem({ item, itemData, isEquipped, onEquip }) {
         
         {/* Item image */}
         <img 
-          src={itemData.img} 
-          alt={itemData.name} 
+          src={itemData?.img || ""} 
+          alt={itemData?.name || "Item"} 
           className="itemImage" 
         />
 

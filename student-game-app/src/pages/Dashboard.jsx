@@ -29,6 +29,7 @@ function formatNumber(n) {
  * - onAddAssignment: function to add a new assignment
  * - onSubmitAssignment: function to mark assignment as submitted
  * - character: object representing the current bread character customization
+ * - isBurnt: whether the user's toast is burnt (too many overdue assignments)
  */
 function Dashboard({
   coins,
@@ -36,6 +37,7 @@ function Dashboard({
   onAddAssignment,
   onSubmitAssignment,
   character,
+  isBurnt,
 }) {
   // Hook for navigating between routes (ex: "/bread")
   const navigate = useNavigate();
@@ -65,7 +67,7 @@ function Dashboard({
               <h3>Your Toast Buddy</h3>
               <div className="characterPreview">
                 {/* Displays user's current bread character */}
-                <BreadCharacter character={character} size="small" />
+                <BreadCharacter character={character} size="small" isBurnt={isBurnt} />
               </div>
 
               {/* Navigates to customization page */}

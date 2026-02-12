@@ -82,7 +82,7 @@ export const PACKS = [
   {
     id: "jamPack",
     name: "Jam Pack",
-    price: 4000,
+    price: 500,
     img: jamPackImg,
     items: ["banana", "blueberry", "cherry", "grape", "raspberry", "strawberry"],
     dropCount: 1,
@@ -90,7 +90,7 @@ export const PACKS = [
   {
     id: "meatPack",
     name: "Meat Pack",
-    price: 3000,
+    price: 600,
     img: meatPackImg,
     items: ["bigMeat", "blueFish", "brownFish", "crab", "deadFish", "longFish", "lotsFish", "penguin", "shrimp", "tunaCan"],
     dropCount: 1,
@@ -98,7 +98,7 @@ export const PACKS = [
   {
     id: "moldPack",
     name: "Mold Pack",
-    price: 30000,
+    price: 600,
     img: moldPackImg,
     items: ["moldGreen", "moldBlue", "moldPurple", "moldRed", "moldYellow", "moldOrange", "moldBrown"],
     dropCount: 1,
@@ -106,7 +106,7 @@ export const PACKS = [
   {
     id: "mysteryPack",
     name: "Mystery Pack",
-    price: 10000,
+    price: 1000,
     img: mysteryPackImg,
     items: ["mystery1", "mystery2", "mystery3", "mystery4", "mystery5", "mystery6", "mystery7", "mystery8", "mystery9", "mystery10", "mystery11"],
     dropCount: 1,
@@ -114,7 +114,7 @@ export const PACKS = [
   {
     id: "spreadPack",
     name: "Spread Pack",
-    price: 5000,
+    price: 400,
     img: spreadPackImg,
     items: ["butter", "cream", "honey", "margarine", "peanutButter", "tahini", "cake", "cheese", "ice", "rice"],
     dropCount: 1,
@@ -122,7 +122,7 @@ export const PACKS = [
   {
     id: "veggiesPack",
     name: "Veggies Pack",
-    price: 5000,
+    price: 600,
     img: veggiesPackImg,
     items: ["carrot", "cucumber", "lettuce", "onion", "tomato", "zucchini", "chili", "ginger", "eggplant", "bigSprout"],
     dropCount: 1,

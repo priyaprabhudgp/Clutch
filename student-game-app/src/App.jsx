@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { auth } from "./firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { isSameDay } from "./logic/timeUtils";
+import { isSameDay, isOverdue } from "./logic/timeUtils";
 
 import Dashboard from "./pages/Dashboard";
 import CharacterPage from "./pages/CharacterPage";
@@ -31,6 +31,9 @@ function App() {
   // Tracks the last time we applied overdue-penalty logic (to ensure it runs once per day)
   const [lastDecayCheck, setLastDecayCheck] = useState(null);
 
+  //Tracks the whether character has burnt toast
+  const [isBurnt, setIsBurnt] = useState(false);
+
   // Current character customization (equipped items)
   const [character, setCharacter] = useState({
     base: "bread",
@@ -54,6 +57,12 @@ function App() {
 
   // Tracks which packs the user already owns (to prevent re-buying / show UI state)
   const [packsOwned, setPacksOwned] = useState([]);
+// Helper function to count overdue assignments
+const getOverdueCount = () => {
+  return assignments.filter(
+    (a) => !a.submitted && isOverdue(a.dueDate, a.submitted)
+  ).length;
+};
 
   // Listen to auth state
   useEffect(() => {
@@ -134,7 +143,7 @@ function App() {
         // First-time user: create default doc + initialize local state
         await setDoc(docRef, {
           assignments: [],
-          coins: 3000000,
+          coins: 400,
           lastDecayCheck: null,
           character: {
             base: "bread",
@@ -147,9 +156,10 @@ function App() {
           },
           inventory: { jam: [], meat: [], mold: [], mystery: [], spreads: [], veggies: [] },
           packsOwned: [],
+          isBurnt: false,
         });
         setAssignments([]);
-        setCoins(3000000);
+        setCoins(400);
         setLastDecayCheck(null);
       }
 
@@ -178,6 +188,7 @@ function App() {
           character,
           inventory,
           packsOwned,
+          isBurnt,
           updatedAt: new Date().toISOString(),
         },
         { merge: true }
@@ -185,7 +196,7 @@ function App() {
     };
 
     saveData();
-  }, [assignments, coins, user, loading, lastDecayCheck, character, inventory, packsOwned]);
+  }, [assignments, coins, user, loading, lastDecayCheck, character, inventory, packsOwned,isBurnt]);
 
   // Daily overdue coin decay
   useEffect(() => {
@@ -218,6 +229,34 @@ function App() {
     // Record that we've processed decay for today
     setLastDecayCheck(now);
   }, [user, loading, assignments, lastDecayCheck]);
+
+    // Check if user has more than 3 overdue assignments and burn toast if so
+  useEffect(() => {
+    if (!user || loading) return;
+
+    // Count overdue assignments
+    const overdueCount = assignments.filter(
+      (a) => !a.submitted && isOverdue(a.dueDate, a.submitted)
+    ).length;
+
+    // If more than 3 overdue, burn the toast
+    if (overdueCount > 3 && !isBurnt) {
+      setIsBurnt(true);
+      // Clear all equipped items but keep inventory
+      setCharacter({
+        base: "bread",
+        jam: null,
+        meat: null,
+        mold: null,
+        mystery: null,
+        spread: null,
+        veggie: null,
+      });
+    } else if (overdueCount <= 3 && isBurnt) {
+      // If fixed enough assignments, unburn
+      setIsBurnt(false);
+    }
+  }, [assignments, isBurnt, user, loading]);
 
   // Adds a new assignment to state (Dashboard uses this via props)
   const handleAddAssignment = (assignment) => {
@@ -259,32 +298,62 @@ function App() {
 
   // Updates equipped character items (CharacterPage uses this via props)
   const handleUpdateCharacter = (newCharacter) => {
+    if (isBurnt) {
+      alert("Go turn in your assignments!");
+      return; // Prevent equipping
+    }
+    
+    const overdueCount = getOverdueCount();
+    if (overdueCount > 3) {
+      alert("Go turn in your assignments!");
+      return; // Prevent equipping
+    }
+    
     setCharacter(newCharacter);
   };
 
   // Adds pack items into inventory and records the pack as owned
   const handleBuyPack = (packId, packItems) => {
-    // Map pack ID to inventory category and add items
-    const packCategoryMap = {
-      jamPack: "jam",
-      meatPack: "meat",
-      moldPack: "mold",
-      mysteryPack: "mystery",
-      spreadPack: "spreads",
-      veggiesPack: "veggies",
-    };
-
-    const category = packCategoryMap[packId];
-    if (category) {
-      // Use Set to avoid duplicates when adding new items
-      setInventory((prev) => ({
-        ...prev,
-        [category]: [...new Set([...prev[category], ...packItems])],
-      }));
+    if (isBurnt) {
+      alert("Go turn in your assignments!");
+      return; // Prevent purchase and don't deduct coins
     }
+    
+    const overdueCount = getOverdueCount();
+    if (overdueCount > 3) {
+      alert("Go turn in your assignments!");
+      return; // Prevent purchase and don't deduct coins
+    }
+  
+  // Map pack ID to inventory category and add items
+  const packCategoryMap = {
+    jamPack: "jam",
+    meatPack: "meat",
+    moldPack: "mold",
+    mysteryPack: "mystery",
+    spreadPack: "spreads",
+    veggiesPack: "veggies",
+  };
 
-    // Track pack ownership (also de-duped)
-    setPacksOwned((prev) => [...new Set([...prev, packId])]);
+  const category = packCategoryMap[packId];
+  if (category) {
+    // Use Set to avoid duplicates when adding new items
+    setInventory((prev) => ({
+      ...prev,
+      [category]: [...new Set([...(prev[category] || []), ...packItems])],
+    }));
+  }
+
+  // Track pack ownership (also de-duped)
+  setPacksOwned((prev) => [...new Set([...prev, packId])]);
+};
+
+  // Refresh burnt toast by paying 100 coins
+  const handleRefreshToast = () => {
+    if (coins < 100) return; // Prevent refresh if not enough coins
+    
+    setCoins((prev) => prev - 100);
+    setIsBurnt(false);
   };
 
   // If not authenticated, show login/signup UI
@@ -306,6 +375,7 @@ function App() {
               onAddAssignment={handleAddAssignment}
               onSubmitAssignment={handleSubmitAssignment}
               character={character}
+              isBurnt={isBurnt}
             />
           }
         />
@@ -317,6 +387,8 @@ function App() {
               character={character}
               inventory={inventory}
               coins={coins}
+              isBurnt={isBurnt}
+              onRefreshToast={handleRefreshToast}
               onUpdateCharacter={handleUpdateCharacter}
             />
           }
@@ -333,6 +405,7 @@ function App() {
               packsOwned={packsOwned}
               onBuyPack={handleBuyPack}
               inventory={inventory}
+              isBurnt={isBurnt}
             />
           }
         />

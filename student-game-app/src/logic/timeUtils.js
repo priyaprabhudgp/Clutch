@@ -2,14 +2,12 @@
 
 /**
  * Returns true if the assignment is overdue and not submitted
+ * Only returns true if at least 1 full day has passed since due date
  */
 export function isOverdue(dueDate, submitted) {
   if (submitted) return false;
 
-  const now = new Date();
-  const due = new Date(dueDate);
-
-  return now > due;
+  return getDaysOverdue(dueDate, submitted) > 0;
 }
 
 /**

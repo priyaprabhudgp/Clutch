@@ -23,8 +23,9 @@ function formatNumber(n) {
  * - packsOwned: packs the user owns (currently unused here)
  * - onBuyPack: function triggered after purchasing a pack
  * - inventory: player's current collected items by category
+ * - isBurnt: whether the user's toast is burnt (too many overdue assignments)
  */
-function Store({ coins, setCoins, packsOwned, onBuyPack, inventory }) {
+function Store({ coins, setCoins, packsOwned, onBuyPack, inventory, isBurnt }) {
 
   // Memoized list of available packs (prevents unnecessary re-renders)
   const items = useMemo(() => PACKS, []);
@@ -59,6 +60,12 @@ function Store({ coins, setCoins, packsOwned, onBuyPack, inventory }) {
    * - Notifies parent component
    */
   function handleBuy(pack) {
+    // Prevent purchase if user is burnt or has too many overdue assignments
+    if (isBurnt) {
+      alert("Go turn in your assignments!");
+      return;
+    }
+
     // Prevent purchase if insufficient coins
     if (coins < pack.price) return;
 
@@ -70,7 +77,7 @@ function Store({ coins, setCoins, packsOwned, onBuyPack, inventory }) {
     
     // Get first pulled item details for dialog display
     const pulledItemId = randomItems[0];
-    const itemData = ITEM_IMAGES[pulledItemId];
+    const itemData = ITEM_IMAGES[pulledItemId] || { name: "Unknown Item", img: "/gacha-bank/mystery.png" };
     
     // Map pack IDs to inventory categories
     const packCategoryMap = {

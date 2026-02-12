@@ -30,8 +30,9 @@ function formatNumber(n) {
  * - inventory: List of items owned by the player
  * - coins: Number of coins the player has
  * - onUpdateCharacter: Function to update character in parent state
+ * - isBurnt: Whether the user's toast is burnt (too many overdue assignments)
  */
-function CharacterPage({ character, inventory, coins, onUpdateCharacter }) {
+function CharacterPage({ character, inventory, coins, onUpdateCharacter, isBurnt }) {
 
   // Temporary character state (used for preview before saving)
   const [tempCharacter, setTempCharacter] = useState(character);
@@ -81,7 +82,7 @@ function CharacterPage({ character, inventory, coins, onUpdateCharacter }) {
         <div className="characterPreviewSection">
           <div className="previewContainer">
             {/* Displays temporary character customization */}
-            <BreadCharacter character={tempCharacter} size="small" />
+            <BreadCharacter character={tempCharacter} size="small" isBurnt={isBurnt} />
           </div>
 
           {/* Save Button */}

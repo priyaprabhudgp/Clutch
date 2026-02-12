@@ -7,6 +7,9 @@ import breadImage from "../assets/bread.png";
 // Component-specific styling
 import "./BreadCharacter.css";
 
+//Burnt Bread :(( for bad kids
+import burntToastImage from "../assets/toast-burnt.png";
+
 /**
  * BreadCharacter Component
  * 
@@ -17,12 +20,14 @@ import "./BreadCharacter.css";
  *   Possible keys: spread, jam, meat, mold, mystery, veggie
  * - size (string): Controls overall bread size ("large" by default).
  */
-export default function BreadCharacter({ character, size = "large" }) {
+export default function BreadCharacter({ character, size = "large" , isBurnt = false}) {
 
   /**
    * Returns the image path for a given item ID.
    * If the item does not exist in ITEM_IMAGES, returns null.
    */
+
+
   const getItemImage = (itemId) => {
     return ITEM_IMAGES[itemId]?.img || null;
   };
@@ -31,10 +36,10 @@ export default function BreadCharacter({ character, size = "large" }) {
     <div className={`bread bread-${size}`}>
       {/* Bread base image */}
       <img 
-        src={breadImage} 
-        alt="Bread base" 
-        className="bread-base-image"
-      />
+      src={isBurnt ? burntToastImage : breadImage} 
+      alt={isBurnt ? "Burnt toast" : "Bread base"} 
+      className="bread-base-image"
+    />
 
       {/* Container that stacks toppings visually on top of the bread */}
       <div className="bread-toppings">
